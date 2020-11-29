@@ -64,8 +64,6 @@
 </script>
 
 <style scoped>
-    @import url('./css/main.css');
-
     #app {
         min-height: 100%;
         margin: 0 auto -135px;
