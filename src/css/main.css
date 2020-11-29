@@ -1,0 +1,21 @@
+body {
+    background-color: #FAFAFA;
+    padding-top: 58px;
+    margin: 0;
+}
+
+.navbar {
+    left: 0;
+    right: 0;
+    top: 0;
+    min-height: 58px;
+    z-index: 15;
+    background: #2d2d32;
+    position: fixed;
+}
+
+.clearfix:after {
+    content: " ";
+    clear: both;
+    display: table;
+}
