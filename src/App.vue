@@ -1,7 +1,8 @@
 <template>
     <div id="app">
+        <div class="head_navbar"></div>
         <div class="search-wrapper">
-            <div class="search">
+            <div class="search w-50">
                 <input
                         type="text"
                         class="search-field"
@@ -12,7 +13,7 @@
             </div>
         </div>
 
-        <div class="page">
+        <div class="page w-75">
             <div class="versions">
                 <version
                         v-for="(obj, version) in currentPackage.versions"
@@ -72,10 +73,8 @@
     }
 
     .page {
-        width: 1000px;
         margin: 20px auto;
         padding: 10px;
-        /*border: 1px solid black;*/
     }
 
     .search-wrapper {
@@ -83,7 +82,6 @@
     }
 
     .search {
-        width: 50%;
         padding: 25px 0;
         margin: 0 auto;
     }
@@ -101,5 +99,15 @@
         border-radius: 2px;
         width: 100%;
         height: 34px;
+    }
+
+    .head_navbar {
+        left: 0;
+        right: 0;
+        top: 0;
+        min-height: 58px;
+        z-index: 15;
+        background: #2d2d32;
+        position: fixed;
     }
 </style>
