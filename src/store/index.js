@@ -49,6 +49,8 @@ export default new Vuex.Store({
             for (let version of state.selectedVersions) {
                 let require = state.package.versions[version].require;
 
+                if (!require) continue;
+
                 for (const [requireKey, requireVersion] of Object.entries(require)) {
                     if (!requirements[requireKey]) {
                         requirements[requireKey] = {
