@@ -31,7 +31,13 @@ export default new Vuex.Store({
                 state.selectedVersions.splice(index, 1);
             }
         },
+        setSelectedVersion (state, val) {
+            state.selectedVersions = val;
+        },
 
+        setRequirements (state, val) {
+            state.requirements = val;
+        },
         fillRequirements (state) {
             let requirements = {};
 
@@ -93,6 +99,11 @@ export default new Vuex.Store({
         deleteSelectedVersion({ commit }, version) {
             commit('deleteSelectedVersion', version);
             commit('fillRequirements');
+        },
+
+        clearTable({ commit }) {
+            commit('setSelectedVersion', []);
+            commit('setRequirements', []);
         }
     }
 })

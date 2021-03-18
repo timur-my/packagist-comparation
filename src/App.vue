@@ -8,7 +8,7 @@
                         @search="onSearch"
                         :options="searchOptions"
                         @input="getPackage"
-                        @option:deselected="onDeselected"
+                        @option:selecting="onSelecting"
                 />
             </div>
         </div>
@@ -44,9 +44,6 @@
             currentPackage () {
                 return this.$store.getters.getPackage;
             },
-            selectedVersions () {
-                return this.$store.getters.getSelectedVersions;
-            },
             searchOptions () {
                 return this.$store.getters.getSearchOptions;
             }
@@ -67,8 +64,8 @@
                 vm.$store.dispatch('getPackagesList', search)
                     .finally(loading(false))
             }, 350),
-            onDeselected: function () {
-                console.log('ALERTTTT');
+            onSelecting: function () {
+                this.$store.dispatch('clearTable');
             }
         }
     }

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="requirements.length > 0">
         <md-table v-model="requirements" md-card>
             <md-table-toolbar>
                 <h1 class="md-title">Comparation:</h1>
@@ -29,7 +29,3 @@
         }
     }
 </script>
-
-<style scoped>
-
-</style>
