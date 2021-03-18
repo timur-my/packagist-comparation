@@ -8,12 +8,14 @@ export default new Vuex.Store({
     state: {
         package: {},
         selectedVersions: [],
-        requirements: []
+        requirements: [],
+        searchOptions: []
     },
     getters: {
         getPackage: state => state.package,
         getSelectedVersions: state => state.selectedVersions,
         getRequirements: state => state.requirements,
+        getSearchOptions: state => state.searchOptions
     },
     mutations: {
         setPackage (state, obj) {
@@ -22,7 +24,6 @@ export default new Vuex.Store({
 
         addSelectedVersion (state, version) {
             state.selectedVersions.push(version);
-
         },
         deleteSelectedVersion (state, version) {
             let index = state.selectedVersions.indexOf(version);
@@ -54,6 +55,10 @@ export default new Vuex.Store({
             }
 
             state.requirements = Object.values(requirements);
+        },
+
+        setSearchOptions (state, options) {
+            state.searchOptions = options;
         }
     },
     actions: {
@@ -62,6 +67,21 @@ export default new Vuex.Store({
                 .get('https://packagist.org/packages/'+name+'.json')
                 .then(response => {
                     commit('setPackage', response.data.package);
+                })
+                .catch(error => console.log(error))
+        },
+        getPackagesList ({ commit }, search) {
+            return axios
+                .get(`https://packagist.org/search.json?q=${escape(search)}`)
+                .then(response => {
+                    let items = response.data.results,
+                        result = [];
+
+                    for (const item of items) {
+                        result.push(item['name']);
+                    }
+
+                    commit('setSearchOptions', result);
                 })
                 .catch(error => console.log(error))
         },

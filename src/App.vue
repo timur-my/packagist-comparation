@@ -3,13 +3,13 @@
         <div class="head_navbar"></div>
         <div class="search-wrapper">
             <div class="search w-50">
-                <input
-                        type="text"
-                        class="search-field"
+                <v-select
                         placeholder="Search packages..."
-                        v-model="search"
-                        @keyup.enter="getPackage()"
-                >
+                        @search="onSearch"
+                        :options="searchOptions"
+                        @input="getPackage"
+                        @option:deselected="onDeselected"
+                />
             </div>
         </div>
 
@@ -30,17 +30,15 @@
 <script>
     import ComponentVersion from './components/version'
     import ComponentTableReqs from './components/table-reqs'
+    import vSelect from 'vue-select'
+    import _ from 'lodash'
 
     export default {
         name: "App",
         components: {
             'version': ComponentVersion,
-            'table-reqs': ComponentTableReqs
-        },
-        data: function() {
-            return {
-                search: null
-            }
+            'table-reqs': ComponentTableReqs,
+            'v-select': vSelect
         },
         computed: {
             currentPackage () {
@@ -48,18 +46,30 @@
             },
             selectedVersions () {
                 return this.$store.getters.getSelectedVersions;
+            },
+            searchOptions () {
+                return this.$store.getters.getSearchOptions;
             }
         },
         methods: {
             getPackage: function (name = null) {
-                if (!name) {
-                    name = this.search;
+                if (name) {
+                    this.$store.dispatch('loadPackage', name);
                 }
-                this.$store.dispatch('loadPackage', name);
+            },
+            onSearch(search, loading) {
+                if (search.length) {
+                    loading(true);
+                    this.getDebouncePackagesList(loading, search, this);
+                }
+            },
+            getDebouncePackagesList: _.debounce((loading, search, vm) => {
+                vm.$store.dispatch('getPackagesList', search)
+                    .finally(loading(false))
+            }, 350),
+            onDeselected: function () {
+                console.log('ALERTTTT');
             }
-        },
-        beforeMount(){
-            this.$store.dispatch('loadPackage', 'symfony/symfony');
         }
     }
 </script>
@@ -84,21 +94,6 @@
     .search {
         padding: 25px 0;
         margin: 0 auto;
-    }
-
-    .search-field {
-        background: #FFF;
-        font: 18px 'Open Sans', sans-serif;
-        border: 0;
-        padding: 0px 10px;
-        color: #2d2d32;
-        outline: none;
-        display: inline;
-        min-height: 20px;
-        box-shadow: none;
-        border-radius: 2px;
-        width: 100%;
-        height: 34px;
     }
 
     .head_navbar {
