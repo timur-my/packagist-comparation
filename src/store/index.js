@@ -14,6 +14,9 @@ export default new Vuex.Store({
     getters: {
         getPackage: state => state.package,
         getSelectedVersions: state => state.selectedVersions,
+        getIsSelectedVersion: state => version => {
+            return state.selectedVersions.indexOf(version) !== -1;
+        },
         getRequirements: state => state.requirements,
         getSearchOptions: state => state.searchOptions
     },
@@ -106,6 +109,7 @@ export default new Vuex.Store({
         clearTable({ commit }) {
             commit('setSelectedVersion', []);
             commit('setRequirements', []);
+            console.log('clearTable', this.package);
         }
     }
 })

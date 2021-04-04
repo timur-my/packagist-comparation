@@ -1,7 +1,7 @@
 <template>
     <button
             class="version"
-            @click="toggleSelectedVersion(name)"
+            @click="toggleSelectedVersion"
             :class="{versionActive: isActive}"
     >
         {{name}}
@@ -14,25 +14,17 @@
         props: {
             name: String,
         },
-        data: function () {
-            return {
-                isActive: false
-            }
-        },
         computed: {
-            selectedVersions () {
-                return this.$store.getters.getSelectedVersions;
+            isActive() {
+                return this.$store.getters.getIsSelectedVersion(this.name);
             }
         },
         methods: {
-            toggleSelectedVersion: function (version) {
-                let index = this.selectedVersions.indexOf(version);
-                if (index !== -1) {
-                    this.$store.dispatch('deleteSelectedVersion', version);
-                    this.isActive = false;
+            toggleSelectedVersion() {
+                if (this.isActive) {
+                    this.$store.dispatch('deleteSelectedVersion', this.name);
                 } else {
-                    this.$store.dispatch('addSelectedVersion', version);
-                    this.isActive = true;
+                    this.$store.dispatch('addSelectedVersion', this.name);
                 }
             },
 
